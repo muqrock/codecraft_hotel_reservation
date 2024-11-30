@@ -1,0 +1,171 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Header */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #555;
+}
+
+.admin-header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-header nav ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+}
+
+.admin-header .logout a {
+    color: #ff4c4c;
+    text-decoration: none;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.section button {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px auto;
+}
+
+button:hover {
+    background-color: #e04343;
+}
+
+/* Room Cards */
+.room-list, .event-list {
+    display: flex;
+    gap: 1rem;
+    padding-top: 15px;
+}
+
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Footer */
+.admin-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+    color: #888;
+}
+
+
+<!--table----!>
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+    color: #555;
+    font-weight: bold;
+}
+
+table td img {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+table .status {
+    font-weight: bold;
+}
+
+table .status.available {
+    color: #28a745;
+}
+
+table .status.booked {
+    color: #dc3545;
+}
+
+.actions button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.actions button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    table th, table td {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}
