@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Hotel Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="adminstyles.css">
+    <style>
+        /* Card form styles */
+        .card-form {
+            display: none;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .card-form h2 {
+            margin: 0 0 20px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4caf50;
+        }
+
+        .form-group input[type="file"] {
+            padding: 3px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button.cancel {
+            background-color: #f44336;
+        }
+
+        button.cancel:hover {
+            background-color: #e53935;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="logo">Hotel Admin</div>
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#rooms">Rooms</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#guests">Guests</a></li>
+                <li><a href="#payments">Payments</a></li>
+                <li><a href="#reports">Reports</a></li>
+            </ul>
+        </nav>
+        <div class="logout"><a href="#">Logout</a></div>
+    </header>
+
+    <main>
+        <section id="booking" class="section">
+            <h2>Confirm Booking</h2>
+            
+        </section>
+
+        <section id="rooms" class="section">
+            <h2>Manage Rooms</h2>
+            <button onclick="showAddRoomForm()">Add New Room</button>
+            <div class="room-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Room Type</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="https://via.placeholder.com/60x40" alt="Room"></td>
+                            <td>Single Bed</td>
+                            <td>RM200</td>
+                            <td>A/C, Shower, Coffee Set, LED TV, WiFi</td>
+                            <td><span class="status available">Available</span></td>
+                            <td class="actions">
+                                <button onclick="showEditRoomForm('Single Bed', 'RM200', 'A/C, Shower, Coffee Set, LED TV, WiFi', 'Available')">Edit</button>
+                                <button>Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://via.placeholder.com/60x40" alt="Room"></td>
+                            <td>Double Bed</td>
+                            <td>RM300</td>
+                            <td>Pool View, WiFi, A/C, TV</td>
+                            <td><span class="status booked">Booked</span></td>
+                            <td class="actions">
+                                <button onclick="showEditRoomForm('Double Bed', 'RM300', 'Pool View, WiFi, A/C, TV', 'Booked')">Edit</button>
+                                <button>Details</button>
+                            </td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Overlay to dim background -->
+        <div class="overlay" id="overlay" onclick="hideEditRoomForm()"></div>
+
+         <!-- Add Room Form -->
+         <div class="card-form" id="addRoomForm">
+            <h2>Add New Room</h2>
+            <form id="roomForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="roomType">Room Type</label>
+                    <input type="text" id="roomType" name="roomType" placeholder="Enter room type" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price per Night</label>
+                    <input type="number" id="price" name="price" placeholder="Enter price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" placeholder="Enter description" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Available">Available</option>
+                        <option value="Booked">Booked</option>
+                        <option value="Under Maintenance">Under Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="photos">Upload Photos</label>
+                    <input type="file" id="photos" name="photos[]" accept="image/*" multiple>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Add Room</button>
+                    <button type="button" class="cancel" onclick="hideAddRoomForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+        <!-- Edit Room Form -->
+        <div class="card-form" id="editRoomForm">
+            <h2>Edit Room</h2>
+            <form id="editRoomFormContent" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="editRoomType">Room Type</label>
+                    <input type="text" id="editRoomType" name="editRoomType" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPrice">Price per Night</label>
+                    <input type="number" id="editPrice" name="editPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <input type="text" id="editDescription" name="editDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" name="editStatus" required>
+                        <option value="Available">Available</option>
+                        <option value="Booked">Booked</option>
+                        <option value="Under Maintenance">Under Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editPhotos">Upload Photos</label>
+                    <input type="file" id="editPhotos" name="editPhotos[]" accept="image/*" multiple>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" class="cancel" onclick="hideEditRoomForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="admin-footer">
+        <p>© 2024 Grand Luxe Hotels Admin Panel</p>
+    </footer>
+
+    <script>
+         // Show and hide the Add Room form
+         function showAddRoomForm() {
+            document.getElementById('addRoomForm').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function hideAddRoomForm() {
+            document.getElementById('addRoomForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('roomForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            console.log('Room data submitted:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            alert('Room added successfully!');
+            hideAddRoomForm();
+            event.target.reset();
+        });
+        // Show and hide the Edit Room form
+        function showEditRoomForm(roomType, price, description, status) {
+            document.getElementById('editRoomType').value = roomType;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editStatus').value = status;
+
+            document.getElementById('editRoomForm').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function hideEditRoomForm() {
+            document.getElementById('editRoomForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('editRoomFormContent').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            console.log('Room data updated:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            alert('Room updated successfully!');
+            hideEditRoomForm();
+            event.target.reset();
+        });
+    </script>
+</body>
+</html>
