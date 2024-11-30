@@ -53,10 +53,6 @@
             border-color: #4caf50;
         }
 
-        .form-group input[type="file"] {
-            padding: 3px;
-        }
-
         .button-group {
             display: flex;
             justify-content: space-between;
@@ -94,17 +90,88 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            color: #555;
+            font-weight: bold;
+        }
+
+        table td img {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        table .status {
+            font-weight: bold;
+        }
+
+        table .status.pending {
+            color: #ff9800;
+        }
+
+        table .status.available {
+            color: #28a745;
+        }
+
+        table .status.booked {
+            color: #dc3545;
+        }
+
+        .actions button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .actions button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            table th, table td {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="admin-header">
-        <div class="logo">Hotel Admin</div>
+        <div class="logo">Grand Luxe Hotel</div>
         <nav>
             <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#booking">Books</a></li>
                 <li><a href="#rooms">Rooms</a></li>
-                <li><a href="#events">Events</a></li>
-                <li><a href="#guests">Guests</a></li>
+                <li><a href="#guests">Events</a></li>
                 <li><a href="#payments">Payments</a></li>
                 <li><a href="#reports">Reports</a></li>
             </ul>
@@ -113,11 +180,55 @@
     </header>
 
     <main>
+        <section id="dashboard" class="section">
+            <h1>Dashboard</h1>
+            <p>Welcome to the admin panel! Use the navigation menu to manage the system.</p>
+        </section>
+        <!-- Booking Section -->
         <section id="booking" class="section">
             <h2>Confirm Booking</h2>
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Customer Name</th>
+                        <th>Room Type</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BK001</td>
+                        <td>John Doe</td>
+                        <td>Single Bed</td>
+                        <td>2024-12-05</td>
+                        <td>2024-12-07</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td class="actions">
+                            <button>Confirm</button>
+      
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>BK002</td>
+                        <td>Jane Smith</td>
+                        <td>Double Bed</td>
+                        <td>2024-12-10</td>
+                        <td>2024-12-12</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td class="actions">
+                            <button>Confirm</button>
+        
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
+        <!-- Manage Rooms Section -->
         <section id="rooms" class="section">
             <h2>Manage Rooms</h2>
             <button onclick="showAddRoomForm()">Add New Room</button>
@@ -156,85 +267,10 @@
                                 <button>Details</button>
                             </td>
                         </tr>
-                        <!-- Add more rows as needed -->
                     </tbody>
                 </table>
             </div>
         </section>
-
-        <!-- Overlay to dim background -->
-        <div class="overlay" id="overlay" onclick="hideEditRoomForm()"></div>
-
-         <!-- Add Room Form -->
-         <div class="card-form" id="addRoomForm">
-            <h2>Add New Room</h2>
-            <form id="roomForm" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="roomType">Room Type</label>
-                    <input type="text" id="roomType" name="roomType" placeholder="Enter room type" required>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price per Night</label>
-                    <input type="number" id="price" name="price" placeholder="Enter price" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" placeholder="Enter description" required>
-                </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status" required>
-                        <option value="Available">Available</option>
-                        <option value="Booked">Booked</option>
-                        <option value="Under Maintenance">Under Maintenance</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="photos">Upload Photos</label>
-                    <input type="file" id="photos" name="photos[]" accept="image/*" multiple>
-                </div>
-                <div class="button-group">
-                    <button type="submit">Add Room</button>
-                    <button type="button" class="cancel" onclick="hideAddRoomForm()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-        <!-- Edit Room Form -->
-        <div class="card-form" id="editRoomForm">
-            <h2>Edit Room</h2>
-            <form id="editRoomFormContent" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="editRoomType">Room Type</label>
-                    <input type="text" id="editRoomType" name="editRoomType" required>
-                </div>
-                <div class="form-group">
-                    <label for="editPrice">Price per Night</label>
-                    <input type="number" id="editPrice" name="editPrice" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="editDescription">Description</label>
-                    <input type="text" id="editDescription" name="editDescription" required>
-                </div>
-                <div class="form-group">
-                    <label for="editStatus">Status</label>
-                    <select id="editStatus" name="editStatus" required>
-                        <option value="Available">Available</option>
-                        <option value="Booked">Booked</option>
-                        <option value="Under Maintenance">Under Maintenance</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="editPhotos">Upload Photos</label>
-                    <input type="file" id="editPhotos" name="editPhotos[]" accept="image/*" multiple>
-                </div>
-                <div class="button-group">
-                    <button type="submit">Save Changes</button>
-                    <button type="button" class="cancel" onclick="hideEditRoomForm()">Cancel</button>
-                </div>
-            </form>
-        </div>
     </main>
 
     <footer class="admin-footer">
@@ -242,61 +278,20 @@
     </footer>
 
     <script>
-         // Show and hide the Add Room form
-         function showAddRoomForm() {
+        // Show and hide the Add Room form
+        function showAddRoomForm() {
             document.getElementById('addRoomForm').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
         }
 
-        function hideAddRoomForm() {
-            document.getElementById('addRoomForm').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        // Handle form submission
-        document.getElementById('roomForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-
-            console.log('Room data submitted:');
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-
-            alert('Room added successfully!');
-            hideAddRoomForm();
-            event.target.reset();
-        });
         // Show and hide the Edit Room form
         function showEditRoomForm(roomType, price, description, status) {
+            const form = document.getElementById('editRoomForm');
+            form.style.display = 'block';
             document.getElementById('editRoomType').value = roomType;
-            document.getElementById('editPrice').value = price;
-            document.getElementById('editDescription').value = description;
-            document.getElementById('editStatus').value = status;
-
-            document.getElementById('editRoomForm').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('editRoomPrice').value = price;
+            document.getElementById('editRoomDescription').value = description;
+            document.getElementById('editRoomStatus').value = status;
         }
-
-        function hideEditRoomForm() {
-            document.getElementById('editRoomForm').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        // Handle form submission
-        document.getElementById('editRoomFormContent').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-
-            console.log('Room data updated:');
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-
-            alert('Room updated successfully!');
-            hideEditRoomForm();
-            event.target.reset();
-        });
     </script>
 </body>
 </html>
