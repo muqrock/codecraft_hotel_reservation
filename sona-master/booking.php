@@ -26,6 +26,34 @@ if ($result->num_rows > 0) {
     exit;
 }
 
+// Handle form submission when the "Booking Now" button is clicked
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get form values
+    $checkIn = $_POST['check_in'];
+    $checkOut = $_POST['check_out'];
+    $guests = $_POST['guests'];
+
+    // Check if the room is available for the selected dates
+    $availabilitySql = "SELECT * FROM roombookings WHERE RoomID = ? 
+                        AND ((CheckInDate BETWEEN ? AND ?) OR (CheckOutDate BETWEEN ? AND ?))";
+    $stmt = $conn->prepare($availabilitySql);
+    $stmt->bind_param("issss", $roomID, $checkIn, $checkOut, $checkIn, $checkOut);
+    $stmt->execute();
+    $availabilityResult = $stmt->get_result();
+
+    if ($availabilityResult->num_rows > 0) {
+        // Room is not available for the selected dates
+        echo "Room is not available for the selected dates.";
+    } else {
+        // Room is available, calculate the total amount
+        $totalAmount = $room['PricePerNight'] * (strtotime($checkOut) - strtotime($checkIn)) / (60 * 60 * 24); // Calculate total amount
+        
+        // Redirect to payment.php with booking details
+        header("Location: payment.php?room_id=" . $room['RoomID'] . "&room_type=" . urlencode($room['RoomType']) . "&check_in=" . $checkIn . "&check_out=" . $checkOut . "&guests=" . $guests . "&total_amount=" . $totalAmount);
+        exit;
+    }
+}
+
 $stmt->close();
 $conn->close();
 ?>
@@ -64,12 +92,6 @@ $conn->close();
         <div class="loader"></div>
     </div>
 
-    <!-- Header Section Begin -->
-    <header class="header-section header-normal">
-        <!-- Your header code goes here (same as the previous one) -->
-    </header>
-    <!-- Header End -->
-
     <!-- Breadcrumb Section Begin -->
     <div class="breadcrumb-section">
         <div class="container">
@@ -106,7 +128,8 @@ $conn->close();
                                         <i class="icon_star"></i>
                                         <i class="icon_star-half_alt"></i>
                                     </div>
-                                    <a href="booking.php?room_id=<?php echo $room['RoomID']; ?>" class="primary-btn">Booking Now</a>
+                                    <!-- Button now submits the form to check availability and redirect to payment page -->
+                                    <button type="submit" class="primary-btn">Booking Now</button>
                                 </div>
                             </div>
                             <h2>RM<?php echo number_format($room['PricePerNight'], 2); ?><span>/Per night</span></h2>
@@ -138,20 +161,18 @@ $conn->close();
                 <div class="col-lg-4">
                     <div class="room-booking">
                         <h3>Your Reservation</h3>
-                        <form action="#" method="post">
+                        <form action="booking.php?room_id=<?php echo $room['RoomID']; ?>" method="POST">
                             <div class="check-date">
                                 <label for="date-in">Check In:</label>
-                                <input type="text" class="date-input" id="date-in" name="check_in">
-                                <i class="icon_calendar"></i>
+                                <input type="date" id="date-in" name="check_in" required>
                             </div>
                             <div class="check-date">
                                 <label for="date-out">Check Out:</label>
-                                <input type="text" class="date-input" id="date-out" name="check_out">
-                                <i class="icon_calendar"></i>
+                                <input type="date" id="date-out" name="check_out" required>
                             </div>
                             <div class="select-option">
                                 <label for="guest">Guests:</label>
-                                <select id="guest" name="guests">
+                                <select id="guest" name="guests" required>
                                     <option value="1">1 Adult</option>
                                     <option value="2">2 Adults</option>
                                     <option value="3">3 Adults</option>
@@ -159,11 +180,12 @@ $conn->close();
                             </div>
                             <div class="select-option">
                                 <label for="room">Room:</label>
-                                <select id="room" name="room">
+                                <select id="room" name="room" required>
                                     <option value="1">1 Room</option>
                                 </select>
                             </div>
-                            <button type="submit">Check Availability</button>
+                            <!-- Changed button to submit the form and redirect to payment.php -->
+                            <button type="submit" class="primary-btn">Booking Now</button>
                         </form>
                     </div>
                 </div>
