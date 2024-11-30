@@ -160,7 +160,70 @@
     </section>
     <!-- Hero Section End -->
 
-<<<<<<< Updated upstream
+    <!-- Booking History Section Begin -->
+    <section class="booking-history-section spad">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Booking History</h2>
+            </div>
+
+            <!-- Booking History Table -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Full Name</th>
+                        <th>Room Type</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Total Amount</th>
+                        <th>Booking Status</th>
+                        <th>Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Include database connection
+                    include 'dbcon.php';
+
+                    // Fetch booking history by joining the guests and roombookings tables
+                    $sql = "SELECT rb.BookingID, g.FullName, r.RoomType, rb.CheckInDate, rb.CheckOutDate, rb.TotalAmount, rb.BookingStatus, rb.PaymentStatus 
+                            FROM roombookings rb
+                            JOIN guests g ON rb.GuestID = g.GuestID
+                            JOIN rooms r ON rb.RoomID = r.RoomID";
+                    $result = mysqli_query($conn, $sql);
+
+                    // Display booking history
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<tr>';
+                            echo '<td>' . $row['BookingID'] . '</td>';
+                            echo '<td>' . htmlspecialchars($row['FullName']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['RoomType']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['CheckInDate']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['CheckOutDate']) . '</td>';
+                            echo '<td>RM ' . number_format($row['TotalAmount'], 2) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['BookingStatus']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['PaymentStatus']) . '</td>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        echo '<tr><td colspan="8">No bookings found.</td></tr>';
+                    }
+
+                    // Close the database connection
+                    mysqli_close($conn);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Booking History Section End -->
+
+
+
+
+
     <!-- About Us Section Begin -->
     <section class="aboutus-section spad">
         <div class="container">
@@ -193,243 +256,8 @@
     </section>
     <!-- About Us Section End -->
 
-    <!-- Services Section End -->
-    <section class="services-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <span>What We Do</span>
-                        <h2>Discover Our Services</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-036-parking"></i>
-                        <h4>Luxurious Accommodations</h4>
-                        <p>Elegant rooms and suites designed for ultimate comfort and relaxation.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-033-dinner"></i>
-                        <h4>Fine Dining</h4>
-                        <p>Exquisite culinary experiences with a variety of gourmet options to suit every taste.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-026-bed"></i>
-                        <h4>Spa & Wellness</h4>
-                        <p>Rejuvenating treatments and wellness services to relax and refresh your mind and body.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-024-towel"></i>
-                        <h4>Event & Meeting Spaces </h4>
-                        <p>State-of-the-art venues for conferences, weddings, and special events with personalized service.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-044-clock-1"></i>
-                        <h4>24/7 Concierge Service </h4>
-                        <p>Dedicated staff available around the clock to cater to your every need and ensure a seamless stay.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="service-item">
-                        <i class="flaticon-012-cocktail"></i>
-                        <h4>Exclusive Lounge Access</h4>
-                        <p>njoy a private, serene space with premium amenities and personalized service for our valued guests.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Services Section End -->
+  
 
-    <!-- Home Room Section Begin -->
-    <section class="hp-room-section">
-        <div class="container-fluid">
-            <div class="hp-room-items">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="hp-room-item set-bg" data-setbg="img/room/room-b1.jpg">
-                            <div class="hr-text">
-                                <h3>Double Room</h3>
-                                <h2>199$<span>/Pernight</span></h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td class="r-o">Size:</td>
-                                            <td>30 ft</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Capacity:</td>
-                                            <td>Max persion 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Bed:</td>
-                                            <td>King Beds</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Services:</td>
-                                            <td>Wifi, Television, Bathroom,...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="#" class="primary-btn">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="hp-room-item set-bg" data-setbg="img/room/room-b2.jpg">
-                            <div class="hr-text">
-                                <h3>Premium King Room</h3>
-                                <h2>159$<span>/Pernight</span></h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td class="r-o">Size:</td>
-                                            <td>30 ft</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Capacity:</td>
-                                            <td>Max persion 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Bed:</td>
-                                            <td>King Beds</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Services:</td>
-                                            <td>Wifi, Television, Bathroom,...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="#" class="primary-btn">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="hp-room-item set-bg" data-setbg="img/room/room-b3.jpg">
-                            <div class="hr-text">
-                                <h3>Deluxe Room</h3>
-                                <h2>198$<span>/Pernight</span></h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td class="r-o">Size:</td>
-                                            <td>30 ft</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Capacity:</td>
-                                            <td>Max persion 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Bed:</td>
-                                            <td>King Beds</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Services:</td>
-                                            <td>Wifi, Television, Bathroom,...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="#" class="primary-btn">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="hp-room-item set-bg" data-setbg="img/room/room-b4.jpg">
-                            <div class="hr-text">
-                                <h3>Family Room</h3>
-                                <h2>299$<span>/Pernight</span></h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td class="r-o">Size:</td>
-                                            <td>30 ft</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Capacity:</td>
-                                            <td>Max persion 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Bed:</td>
-                                            <td>King Beds</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="r-o">Services:</td>
-                                            <td>Wifi, Television, Bathroom,...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="#" class="primary-btn">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Home Room Section End -->
-
-    <!-- Testimonial Section Begin -->
-    <section class="testimonial-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <span>Testimonials</span>
-                        <h2>What Customers Say?</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                    <div class="testimonial-slider owl-carousel">
-                        <div class="ts-item">
-                            <p>A truly remarkable experience! The staff at Grand Luxe Hotels went above and beyond to make our stay unforgettable. Highly recommended!</p>
-                            <div class="ti-author">
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5> - Ahmad Hisyam</h5>
-                            </div>
-                            <img src="img/testimonial-logo.png" alt="">
-                        </div>
-                        <div class="ts-item">
-                            <p>From the luxurious rooms to the top-notch service, everything was perfect. I’ll definitely be returning to Grand Luxe Hotels!</p>
-                            <div class="ti-author">
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5> - Abdul Haziq</h5>
-                            </div>
-                            <img src="img/testimonial-logo.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonial Section End -->
-
-=======
->>>>>>> Stashed changes
     <!-- Footer Section Begin -->
     <footer class="footer-section">
         <div class="container">
